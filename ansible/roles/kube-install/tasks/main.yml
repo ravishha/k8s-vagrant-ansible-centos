@@ -1,0 +1,33 @@
+---
+- name: Add repository
+  yum_repository:
+          name: 'kubernetes'
+          description: Kubernetes Yum Repo
+          baseurl: 'https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64'
+          gpgcheck: 'no'
+          enabled: 'yes'
+
+- name: Set SELINUX To Permissive
+  command: "setenforce 0"
+
+- name: Set the configuration file
+  replace:
+          path: '/etc/selinux/config'
+          regexp: 'SELINUX=enforcing'
+          replace: 'SELINUX=permissive'
+
+- name: Install Kubernetes binaries
+  yum:
+          name: '{{ kubernetes_binaries }}'
+          state: present
+  vars:
+          kubernetes_binaries:
+                  - 'kubelet'
+                  - 'kubeadm'
+                  - 'kubectl'
+
+- name: Enable the kubelet
+  systemd:
+          state: 'started'
+          name: 'kubelet'
+

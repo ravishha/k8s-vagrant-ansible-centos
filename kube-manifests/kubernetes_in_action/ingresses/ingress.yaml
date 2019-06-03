@@ -1,0 +1,26 @@
+# An Ingress with 3 hosts
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: kubia-rules
+spec:
+  tls:
+  - hosts:
+    - kubia.fortius.phz
+    secretName: tls-secret
+  rules:
+  - host: kubia.fortius.phz
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubia-nodeport
+          servicePort: 8080
+  - host: kubia1.fortius.phz
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: kubia-nodeport
+          servicePort: 8080
+

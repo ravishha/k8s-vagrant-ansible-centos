@@ -1,0 +1,61 @@
+---
+- name: ensure old docker files are removed
+  yum:
+          name: '{{ docker_old_packages }}'
+          state: 'absent'
+  vars:
+          docker_old_packages:
+                  - docker
+                  - docker-client
+                  - docker-client-latest
+                  - docker-common
+                  - docker-latest
+                  - docker-latest-logrotate
+                  - docker-logrotate
+                  - docker-engine
+
+- name: ensure user and group exist for docker
+  group:
+          name: docker
+          state: present
+
+
+- name: ensure user and group exist for docker
+  user:
+          name: docker
+          group: docker
+          state: present
+
+- name: Install docker pre-requisites
+  yum:
+          name: '{{ docker_items }}'
+          state: 'present'
+  vars:
+          docker_items:
+                  - yum-utils
+                  - device-mapper-persistent-data
+                  - lvm2
+
+- name: Add repository
+  yum_repository:
+          name: 'docker-ce' 
+          description: Docker CE Yum Repo
+          baseurl: 'https://download.docker.com/linux/centos/7/$basearch/stable'
+          gpgcheck: 'no'
+          enabled: 'yes'
+
+- name: Install Docker-CE
+  yum:
+          name: '{{ docker_binaries }}'
+          state: present
+  vars:
+          docker_binaries:
+                  - docker-ce
+                  - docker-ce-cli
+                  - containerd.io
+
+- name: start the docker service
+  systemd:
+          state: started
+          name: docker
+

@@ -1,0 +1,22 @@
+# This is the default ansible 'hosts' file.
+#
+# It should live in /etc/ansible/hosts
+#
+#   - Comments begin with the '#' character
+#   - Blank lines are ignored
+#   - Groups of hosts are delimited by [header] elements
+#   - You can enter hostnames or ip addresses
+#   - A hostname/ip can be a member of multiple groups
+
+[fits-k8s]
+k8ssvr		ansible_ssh_host=172.128.0.2	ansible_ssh_port=22 ansible_ssh_user=ansible
+k8swrkr1	ansible_ssh_host=172.128.0.3	ansible_ssh_port=22 ansible_ssh_user=ansible
+k8swrkr2	ansible_ssh_host=172.128.0.4	ansible_ssh_port=22 ansible_ssh_user=ansible
+
+[k8s-master]
+k8ssvr          ansible_ssh_host=172.128.0.2    ansible_ssh_port=22 ansible_ssh_user=ansible
+
+[k8s-nodes]
+k8swrkr1        ansible_ssh_host=172.128.0.3    ansible_ssh_port=22 ansible_ssh_user=ansible
+k8swrkr2        ansible_ssh_host=172.128.0.4    ansible_ssh_port=22 ansible_ssh_user=ansible
+
