@@ -1,8 +1,0 @@
----
-- name: Install Docker
-  hosts: '{{ hosts_var }}'
-  become: true
-  roles:
-     - kube-install
-     - prereq-kube
-     - kubeadm-init
